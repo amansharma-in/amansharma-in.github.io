@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    input {
+      text-align: center;
+      margin: 5px 3px;
+      padding: 3px 3px;
+      border-radius: 8px;
+    }
+
+    input:focus {
+      border: 3px solid red;
+    }
+
+    .details{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center;
+      justify-content:center;
+      margin : 5px 7px;
+      gap:7px;
+    }
+    .cont{
+      display:grid;
+      grid-template-columns:3;
+      width:90%;
+      margin: 5px auto;
+    }
+  .card{
+    border:2px solid black;
+    border-radius:5px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+  }
+  .heading{
+    background-color:grey;
+  }
+  #total td{
+    font-weight:bold;
+    border-top:2px solid black;
+  }
+  .border-t{
+    border-bottom:1px solid black;
+  }
+  </style>
+</head>
+
+<body>
+  <h2>Marksheet Generator</h2>
+  <form class="outline">
+    <input type=" text" placeholder="Name " class="name"><br>
+    <input type="number" placeholder="Admission Number" class="adm_no" /><br>
+    <input type="number" placeholder="Roll Number" class="roll" /><br>
+    <input type="date" placeholder="Date of Birth" class="dob" /><br>
+    <input type="number" placeholder="Marks in English" class="eng" /><br><input type="number"
+      placeholder="Marks in Hindi" class="hin" /><br><input type="number" placeholder="Marks in Mathematics"
+      class="math" /><br>
+    <input type="number" placeholder="Marks in Computer" class="comp" /><br>
+    <input type="number" placeholder="Marks in G.K" class="gk" /><br><input type="number"
+      placeholder="Marks in Art/Craft" class="art" /><br>
+    <input type="number" placeholder="Marks in E.V.S" class="evs" /><br>
+    <input type="button" value="submit" class="btn sub_btn" id="but" />
+    <button type="button" class="btn generate_btn">Generate Marksheet</button>
+  </form>
+  <button id="printBtn" style="display:none">Print</button>
+  <script>
+    master_arr = []
+    sub_btn = document.getElementById("but")
+  const printBtn = document.getElementById("printBtn");
+    sub_btn.addEventListener("click", function () {
+      name = document.querySelector(".name").value;
+      adm_no = document.querySelector(".adm_no").value
+      roll = document.querySelector(".roll").value
+      dob = document.querySelector(".dob").value
+      const eng = parseInt(document.querySelector(".eng").value || 0);
+      const hin = parseInt(document.querySelector(".hin").value || 0);
+      const math = parseInt(document.querySelector(".math").value || 0);
+      const comp = parseInt(document.querySelector(".comp").value || 0);
+      const gk = parseInt(document.querySelector(".gk").value || 0);
+      const art = parseInt(document.querySelector(".art").value || 0);
+      const evs = parseInt(document.querySelector(".evs").value || 0);
+      arr = [name, adm_no, roll, dob, eng, hin, math, comp, gk,art,evs]
+      master_arr.push(arr)
+document.querySelector("form").reset();
+    })
+    
+    generate_btn=document.querySelector(".generate_btn")
+    generate_btn.addEventListener("click",function () {
+      outline=document.querySelector(".outline")
+      outline.style.display="none"
+      cont=document.createElement("div")
+      cont.classList.add("cont")
+
+      for (a=0;a<master_arr.length;a++){
+        card=document.createElement("span")
+        card.classList.add("card")
+       total= master_arr[a][4]+master_arr[a][5]+ master_arr[a][6]+master_arr[a][7]+master_arr[a][8]+master_arr[a][9]+master_arr[a][10]
+        card.innerHTML=`
+        <h3 style="text-align:center">SUMMERDALES PUBLIC SCHOOL</h3>
+        <hr style="border:1px solid black;height:6px;background-color:grey;"/>
+        <div class="details">
+        <span><b>Name: ${master_arr[a][0]}</b></span>
+        
+        <span><b>Admn: ${master_arr[a][1]}</b></span>
+        <span><b>Roll No: ${master_arr[a][2]}</b></span>
+        <span><b>DOB: ${master_arr[a][3]}</b></span>
+       </b></div>
+        <table>
+        <tr class="heading">
+        <td colspan="2"></td>
+        <td ><b>MM</b></td>
+        <td></td>
+        </tr>
+        
+       <tr class="border-t">
+        <td colspan="2">ENGLISH</td>
+        <td>10</td>
+        <td>${master_arr[a][4]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2">HINDI</td>
+        <td>10</td>
+        <td>${master_arr[a][5]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2">MATHEMATICS</td>
+        <td>10</td>
+        <td>${master_arr[a][6]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2">COMPUTER</td>
+        <td>10</td>
+        <td>${master_arr[a][7]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2">GK</td>
+        <td>10</td>
+        <td>${master_arr[a][8]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2">ARTS/CRAFT</td>
+        <td>10</td>
+        <td>${master_arr[a][9]}</td>
+        </tr>
+        <tr class="border-t">
+        <td colspan="2" >EVS</td>
+        <td>10</td>
+        <td>${master_arr[a][10]}</td>
+        </tr><tr></tr>
+        <tr id="total">
+        <td colspan="2">TOTAL</td>
+        <td>70</td>
+        <td>${total}</td>
+        </tr>
+        </table>
+        `
+        cont.appendChild(card)
+        
+      }
+      document.body.appendChild(cont)
+            printBtn.style.display = "inline-block";
+    });
+
+    printBtn.addEventListener("click", function () {
+      const printContent = document.querySelector(".cont").innerHTML;
+      const printWindow = window.open("", "", "width=100,height=100");
+      printWindow.document.write(`<html><head><title>Print</title></head><body>${printContent}</body></html>`);
+      printWindow.document.close();
+      printWindow.print();
+    })
+
+
+   </script>
+</body>
+
+</html>
