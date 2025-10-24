@@ -1,0 +1,809 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Vibe-It</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+US+Modern:wght@100..400&display=swap" rel="stylesheet">
+
+  <script src="https://kit.fontawesome.com/16503c261b.js" crossorigin="anonymous"></script>
+
+  <style>
+
+  body{
+
+    background-color: #FCE6FE;
+
+   
+
+  }
+
+  .container{
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;   
+
+    border-radius: 10px;
+
+    background-color: #F08CFD /*rgba(128,128,128,1)*/;
+
+    /*box-shadow: 30px 30px 50px rgba(0,0,0,0.1) inset;*/
+
+    padding: 10px 10px;
+
+    width: auto;
+
+    margin: 20px 0;
+
+  }
+
+  .container h2{
+
+    display: inline;
+
+    margin: 0 5px;
+
+    font-family: "Comic Sans MS", cursive;
+
+    /*justify-content: center;
+
+    align-items: center;*/
+
+    color: white;
+
+  }
+
+  .search{
+
+    text-align:center;
+
+    border-radius: 50px;
+
+    border: 1px solid black;
+
+    height: 28px;
+
+    width: 100%;
+
+    margin: 0 0;
+
+    padding: 0 10px;
+
+    color: purple;
+
+    background: #FCE6FE/*rgba(250,250,0,0.7)*/;
+
+    font-weight: bold;
+
+  }
+
+  #searchContainer{
+
+    text-align: center;
+
+    position: absolute;
+
+    border-radius: 50px;
+
+    top: 1rem;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 320px;
+
+    animation: slideUp 1.28s linear;
+
+    box-shadow: 0 0 20px white;
+
+    z-index: 2;
+
+    background-color: rgba(0,0,0,0.3);
+
+  }
+
+  .search::placeholder{
+
+    text-align: center;
+
+  }
+
+  
+
+  .search:focus{
+
+    box-shadow: 0 0 20px white;
+
+    outline: none;
+
+    border: 1px solid black;
+
+    text-align: center;
+
+  }
+
+  @keyframes slideUp{
+
+    0%{
+
+      /*bottom: 80rem;*/
+
+      transform: translateX(-50%) scale(0);
+
+    }
+
+    100%{
+
+      /*bottom: 2rem;*/
+
+      transform: translateX(-50%) scale(1);
+
+    }
+
+  }
+
+  
+
+  .song{
+
+    position: relative;
+
+    padding-top: 20px;
+
+    padding-top: 7rem;
+
+    background: #F08CFD/*rgba(255,0,0,0.1)*/;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    /*max-height: calc(100vh - 120px);
+
+    overflow-y: auto;*/
+
+    overflow-x: hidden;
+
+    scroll-behavior: smooth; /* Smooth scrolling */
+
+    border-radius: 10px;
+
+    
+
+  }
+
+  @keyframes fadeIn{
+
+    0%{
+
+      opacity: 0;
+
+      transform: translateX(100%);
+
+    }
+
+    100%{
+
+      opacity: 1;
+
+      transform: translateX(0);
+
+    }
+
+  }
+
+  @keyframes glowing {
+
+    0% {
+
+      box-shadow: 0 0 8px rgba(240, 140, 253, 0.6); /* Light pastel purple */
+
+    }
+
+    25% {
+
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.8); /* Soft pink */
+
+    }
+
+    50% {
+
+      box-shadow: 0 0 21px rgba(204, 204, 255, 1); /* Light lavender */
+
+    }
+
+    75% {
+
+      box-shadow: 0 0 15px rgba(144, 202, 249, 0.8); /* Light blue */
+
+    }
+
+    100% {
+
+      box-shadow: 0 0 8px rgba(138, 43, 226, 0.6); /* Deep purple (rich but still fits with the theme) */
+
+    }
+
+  }
+
+  .cards{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    height: 24px;
+
+    width: 300px;
+
+    background: #FCE6FE/*rgba(255,0,0,0.4)*/;
+
+    border-radius: 10px;
+
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+
+    padding: 10px 10px;
+
+    margin: 10px 0px;
+
+    font-weight: bold;
+
+    transition: all 0.4s ease-in-out;
+
+    flex-shrink: 0;
+
+  }
+
+  .cards.fade-in{
+
+    animation: fadeIn 1.5s ease-in-out;
+
+  }
+
+  .cards.playing{
+
+    animation: glowing 2s ease-in-out infinite reverse;
+
+    z-index: 1;
+
+    transform: scale(1.05);
+
+  }
+
+  .cards:hover{
+
+    height: 30px;
+
+    width: 330px;
+
+    font-size: 23px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+
+    transition: all 0.3s ease;
+
+    transform: scale(1.05);
+
+    /*overflow: hidden;
+
+    overflow-x: scroll;*/
+
+  }
+
+  .cards:hover .time{
+
+    font-size: 1.2rem;
+
+  }
+
+  .time{
+
+    font-weight: normal;
+
+    font-size: 0.9rem;
+
+    margin: 0 3px;
+
+    font-family: "Playwrite US Modern", cursive;
+
+    font-size: 14px;
+
+  }
+
+  .fa-solid {
+
+    transition: transform 0.3s ease, color 0.3s ease;
+
+  }
+
+  .fa-solid:hover {
+
+    transform: scale(1.1); /* Slightly enlarge on hover */
+
+    color: #8a2be2; /* Change color to a purple shade */
+
+  }
+
+  .fa-solid{
+
+    margin: 0 10px;
+
+  }
+
+  .song-name{
+
+    max-width: 200px;
+
+    overflow-x: scroll;
+
+    white-space: nowrap;
+
+  }
+
+  @keyframes rotateIcon {
+
+    0% {
+
+      transform: rotate(0deg);
+
+    }
+
+    100% {
+
+      transform: rotate(180deg); /* Rotate the icon on click */
+
+    }
+
+  }
+
+  .fa-solid.fa-play, .fa-solid.fa-pause {
+
+    transition: transform 0.3s ease;
+
+  } 
+
+  .fa-solid.clicked, .fa-solid.clicked {
+
+    animation: rotateIcon 0.3s ease;
+
+  }
+
+  .footer{
+
+    position: relative;
+
+    bottom: 0;
+
+    padding: 1em;
+
+    text-align: center;
+
+    background: rgba(0,0,0,0.7);
+
+    color: white;
+
+    border-radius: 10px;
+
+    z-index: -1;
+
+    line-height: 1.2rem;
+
+  }
+
+  a{
+
+    color: white;
+
+  }
+  .header{
+      display: flex;
+      justify-content: space-between;
+  }
+
+ </style>
+
+</head>
+
+<body>
+
+  <div class="container header">
+
+    <img src="http://vibeit.likesyou.org/IMG_20251021_205910.png" height=45px width = 100px>
+    <h2>Vibe-It</h2>
+
+  </div>
+
+  
+
+  <div class="container song" id="song-list">
+
+    <!-- <div class="cards">
+
+       <i class="fa-solid fa-play"></i>&ensp;<span class="song-name">maynsyebvsysbwjsysksysgs8stsjsyejudver8rhrh</span>  &ensp;
+
+      <span class="time">3:00mins</span>
+
+    </div>
+
+    <div class="cards">
+
+      <i class="fa-solid fa-play"></i>&ensp;
+
+      <span class="song-name">hsyebsywbuseynd7dhndussjydhr</span> &ensp;
+
+      <span class="time"> 3:00mins</span>
+
+    </div> -->
+
+    <div class="container" id="searchContainer">
+
+    <input type="text" class="search" placeholder="Search For The Song">
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+
+    <span class="copyright">&copy; perists to the respective song owners only.<br>
+
+      • Songs having any Copyright Issues will be removed from the platform.<br>
+
+      • Kindly Contact us at <a href="mailto:7073.aman@gmail.com">mail address</a>. <br>
+
+      <hr>Platform Designed and Hosted for Educational Purposes on free servers.      
+
+    </span>
+
+  </div>
+
+  <script>
+
+    const songArr = [];
+
+    let isTransitioning = false;
+
+    class Song{
+
+      constructor(name, url){
+
+        this.name = name;
+
+        this.url = url;
+
+        this.status = false;
+
+        this.dur_min = 0;
+
+        this.dur_sec = 0;
+
+        this.audio = null;
+
+        this.icon = null;
+
+        this.hasEnded = false;
+
+        this.timeElement = null;
+
+        songArr.push(this);
+
+        this.display();
+
+      }
+
+      initialize_audio(){
+
+        if (!this.audio){
+
+          this.audio = new Audio(this.url);
+
+          this.audio.addEventListener('loadedmetadata', () => {
+
+             this.dur_min = Math.floor(this.audio.duration / 60);
+
+             this.dur_sec = Math.floor(this.audio.duration % 60);
+
+             this.timeElement.textContent = `0:00/${this.dur_min}:${this.dur_sec < 10 ? '0' : ''}${this.dur_sec}`;
+
+          });
+
+          // Handle errors
+
+          this.audio.addEventListener('error', () => {
+
+             this.timeElement.textContent = "Error !";
+
+             this.timeElement.style.color = "red";
+
+             this.icon.style.pointerEvents = "none";
+
+             this.icon.style.opacity = '0.5';
+
+             this.icon.setAttribute("title", "Audio failed to load");
+
+             this.status = false;
+
+             this.cardElement.classList.remove("playing");
+
+             this.playNextSong();
+
+          });
+
+          this.audio.load(); 
+
+          this.audio.addEventListener("timeupdate", ()=>{
+
+            this.update_time();
+
+          });         
+
+        }
+
+      }
+
+      playNextSong(){
+
+        if (!isTransitioning){
+
+          isTransitioning = true;
+
+          const curr_index = songArr.indexOf(this);
+
+          const nextSong = songArr[(curr_index +1)%songArr.length];
+
+          setTimeout( ()=>{
+
+            nextSong.play();
+
+            isTransitioning = false;
+
+          },100)
+
+        }
+
+      }
+
+      unload_audio(){
+
+        if (this.audio){
+
+          this.audio.pause();
+
+          this.audio.removeEventListener("loadedmetadata",()=>{});
+
+          this.audio.removeEventListener("error",()=>{});
+
+          this.audio.removeEventListener("timeupdate",()=>{});
+
+          this.audio = null;
+
+          this.hasEnded = false;
+
+        }
+
+      }
+
+      play(){
+
+        if(!this.status){
+
+          songArr.forEach(song =>{
+
+            if (song.status){
+
+              song.play();
+
+              song.unload_audio();
+
+            }
+
+          });
+
+          this.initialize_audio();
+
+          this.status = true;
+
+          this.hasEnded = false;
+
+          this.audio.play();
+
+          this.icon.classList.remove("fa-play");
+
+          this.icon.classList.add("fa-pause", "clicked");
+
+          this.cardElement.style.backgroundColor = "rgba(230, 210, 240, 1)";
+
+          this.cardElement.classList.add("playing");
+
+          this.cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        }
+
+        else{
+
+          this.status = false;
+
+          this.audio.pause();
+
+          this.icon.classList.remove("fa-pause");
+
+          this.icon.classList.add("fa-play");
+
+          this.cardElement.style.backgroundColor = "#FCE6FE";
+
+          this.cardElement.classList.remove("playing", "clicked");
+
+        }
+
+      }
+
+      curr_state(){
+
+        return this.status;
+
+      }
+
+      update_time(){
+
+        if (this.status && this.timeElement){
+
+          const curr = Math.floor(this.audio.currentTime);
+
+          const min = Math.floor(curr/60);
+
+          const sec = Math.floor(curr%60);
+
+          
+
+          this.timeElement.textContent = `${min}:${sec<10 ? '0' : ''}${sec}/${this.dur_min}:${this.dur_sec<10 ? '0':''}${this.dur_sec}`;         
+
+          if (this.audio.currentTime >= this.audio.duration-0.1 && !this.hasEnded){
+
+            this.hasEnded = true;
+
+            this.playNextSong();
+
+          }
+
+        }
+
+      }
+
+      display(){
+
+        const cardContainer = document.getElementById("song-list");
+
+        const card = document.createElement("div");
+
+        card.classList.add("cards","fade-in");       
+
+        const songNameElement = document.createElement("span");
+
+        songNameElement.classList.add("song-name");
+
+        songNameElement.textContent = this.name;
+
+        
+
+        this.timeElement = document.createElement("span");  
+
+        this.timeElement.classList.add("time");
+
+        this.timeElement.textContent = "--:--" //`${this.dur_min}:${this.dur_sec < 10 ? '0' : ''}${this.dur_sec}mins`;       
+
+        this.icon = document.createElement("i");
+
+        this.icon.classList.add("fa-solid", "fa-play");
+
+        this.icon.addEventListener("click", ()=>{
+
+          this.play();
+
+        });        
+
+        card.appendChild(this.icon);
+
+        card.appendChild(songNameElement);
+
+        card.appendChild(this.timeElement);
+
+        this.cardElement = card;
+
+        //cardContainer.appendChild(card);
+
+        cardContainer.insertBefore(card, cardContainer.querySelector("#searchContainer"));
+
+        card.addEventListener("animationend", ()=>{
+
+          card.classList.remove("fade-in");
+
+        });
+
+      }
+
+    }
+
+    
+
+    new Song("sample", "https://mobcup.com.co/d?n=Jodi%20Movie%20Ringtone%20Download%20Telugu&f=wq82szdxkcxmvy7phq837g677jqhnig36&t=mp3");
+
+    new Song("Sabhi Khaas","https://koshalworld.com/siteuploads/files/sfd125/62170/Sabhi%20Khaas(KoshalWorld.Com).mp3");
+
+    new Song("Tagde Karam", "https://koshalworld.com/siteuploads/files/sfd119/59309/Tagde%20Karam(KoshalWorld.Com).mp3");
+
+    new Song("Itna Na Mujhse Tu Pyaar Badha","https://320.pagalnew.com/download-320k.php?id=1074");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+    new Song(" "," ");
+
+  
+
+    const search = document.querySelector(".search");
+
+      search.addEventListener("input", (e) => {
+
+         const searchText = e.target.value.toLowerCase();
+
+         songArr.forEach(song => {
+
+            const songName = song.name.toLowerCase();
+
+            if (songName.includes(searchText)){
+
+               song.cardElement.style.display = "flex";
+
+            }
+
+            else{
+
+               song.cardElement.style.display = "none";
+
+        }
+
+      });
+
+    });
+
+  </script>
+
+</body>
+
+</html>
